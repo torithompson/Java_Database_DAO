@@ -8,7 +8,7 @@ import java.sql.SQLException;
  *  Database class to represent a database connection
  */
 public class Database {
-    public static Connection getDatabaseConnection() throws SQLException {`
+    public static Connection getDatabaseConnection() throws SQLException {
         //Set the database connection properties
         String protocol = "jdbc";
         String dbServer = "mysql";
