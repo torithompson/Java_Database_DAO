@@ -20,10 +20,11 @@ import entities.Language;
 public class App {
     public static void main(String[] args) throws Exception {
         List<City> cityList;
-        // Establish a connection to the database and create a statement
         List<Language> languageList;
+        // Establish a connection to the database and create a statement
         try (Connection connection = Database.getDatabaseConnection();
                 Statement statement = connection.createStatement();) {
+            // City table
             // Use a CityDao to find and print all cities
             CityDao cityDao = new CityDao(connection);
             // Call the findAll method to get a list of all cities
@@ -32,24 +33,6 @@ public class App {
             // Loop through the list and print each city
             for (City city : cityList) {
                 System.out.println(city);
-            }
-            // Use a LanguageDao to find and print all languages
-            LanguageDao languageDao = new LanguageDao(connection);
-            // Call the findAll method to get a list of all languages
-            languageList = languageDao.findAll();
-            System.out.println("Printing Languages: ");
-            // Loop through the list and print each language
-            for (Language language : languageList) {
-                System.out.println(language);
-            }
-            // Use a CountryDao to find and print all countries
-            CountryDao countryDao = new CountryDao(connection);
-            // Call the findAll method to get a list of all countries
-            List<Country> countryList = countryDao.findAll();
-            System.out.println("Printing Countries: ");
-            // Loop through the list and print each country
-            for (Country country : countryList) {
-                System.out.println(country);
             }
             /**
              * Insert new city into the database
@@ -62,35 +45,74 @@ public class App {
             cityDao.insert(insertCity);
 
             // Find city by ID
-            City city = cityDao.findByID(4030);
-            System.out.println("City returned from findByID (4030): " + city);
+            City city = cityDao.findByID(4003);
+            System.out.println("City returned from findByID (4003): " + city);
             // Update city
             city.setPopulation(10000);
             Boolean success = cityDao.update(city);
-            // Print the city after the update to verify the update was successful 
-            if (success)
-            {
+            // Print the city after the update to verify the update was successful
+            if (success) {
                 System.out.println("City after the update: " + cityDao.findByID(4030));
-            }
-            else
-            {
+            } else {
                 System.out.println("City update failed");
             }
-            //Delete city
+            // Delete city
             Boolean deleteSuccess = cityDao.delete(4030);
             // Print a message to verify the delete was successful
-            if (deleteSuccess)
-            {
+            if (deleteSuccess) {
                 System.out.println("City deleted");
-            }
-            else
-            {
+            } else {
                 System.out.println("Delete failed");
+            }
+            // Find city by city name
+            List<City> cityListByName;
+            cityListByName = cityDao.findCityByName("London");
+            System.out.println("Printing cities by name: ");
+            // Loop through the list and print each city
+            for (City cityByName : cityListByName) {
+                System.out.println(cityByName);
+            }
+            // Find city by country code
+            List<City> cityListByCountryCode;
+            cityListByCountryCode = cityDao.findCityByCountryCode("CAN");
+            System.out.println("Printing cities by country code: ");
+            // Loop through the list and print each city
+            for (City cityByCountryCode : cityListByCountryCode) {
+                System.out.println(cityByCountryCode);
+            }
+            // Find cities with a population greater than 1000000
+            List<City> cityListByPopulation;
+            cityListByPopulation = cityDao.findCityPopulationOver1Million();
+            System.out.println("Printing cities with a population greater than 1000000: ");
+            // Loop through the list and print each city
+            for (City cityByPopulation : cityListByPopulation) {
+                System.out.println(cityByPopulation);
+            }
+
+            // Language table
+            // Use a LanguageDao to find and print all languages
+            LanguageDao languageDao = new LanguageDao(connection);
+            // Call the findAll method to get a list of all languages
+            languageList = languageDao.findAll();
+            System.out.println("Printing Languages: ");
+            // Loop through the list and print each language
+            for (Language language : languageList) {
+                System.out.println(language);
+            }
+
+            // Country table
+            // Use a CountryDao to find and print all countries
+            CountryDao countryDao = new CountryDao(connection);
+            // Call the findAll method to get a list of all countries
+            List<Country> countryList = countryDao.findAll();
+            System.out.println("Printing Countries: ");
+            // Loop through the list and print each country
+            for (Country country : countryList) {
+                System.out.println(country);
             }
             /**
              * Insert new country into the database
              */
-            
             Country insertCountry = new Country();
             insertCountry.setCode("TOR");
             insertCountry.setName("Toriland");
@@ -113,27 +135,37 @@ public class App {
             // Find country by code
             Country country = countryDao.findByID("TOR");
             System.out.println("Country returned from findByID (TOR): " + country);
+            // Find country by name
+            List<Country> countryListByName;
+            countryListByName = countryDao.findByName("Canada");
+            System.out.println("Printing countries by name: ");
+            // Loop through the list and print each country
+            for (Country countryByName : countryListByName) {
+                System.out.println(countryByName);
+            }
+            // Find country by region
+            List<Country> countryListByRegion;
+            countryListByRegion = countryDao.findByRegion("North America");
+            System.out.println("Printing countries by region: ");
+            // Loop through the list and print each country
+            for (Country countryByRegion : countryListByRegion) {
+                System.out.println(countryByRegion);
+            }
             // Update country
             country.setPopulation(5);
             Boolean countrySuccess = countryDao.update(country);
             // Print the country after the update to verify the update was successful
-            if (countrySuccess)
-            {
+            if (countrySuccess) {
                 System.out.println("Country after the update: " + countryDao.findByID("TOR"));
-            }
-            else
-            {
+            } else {
                 System.out.println("Country update failed");
             }
             // Delete country
             Boolean countryDeleteSuccess = countryDao.delete("TOR");
             // Print a message to verify the delete was successful
-            if (countryDeleteSuccess)
-            {
+            if (countryDeleteSuccess) {
                 System.out.println("Country deleted");
-            }
-            else
-            {
+            } else {
                 System.out.println("Country delete failed");
             }
         } catch (Exception e) {

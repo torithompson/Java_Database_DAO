@@ -130,4 +130,72 @@ public class CityDao implements Dao<City, Integer> {
         // Return success
         return success;
     }
+
+    public List<City> findCityByName(String name) {
+        List<City> cities = new ArrayList<City>();
+        // Query to find a city by its name
+        String select = "SELECT * FROM city WHERE name=?";
+        try (PreparedStatement ps = connection.prepareStatement(select);) {
+            ps.setString(1, name);
+            // Execute the query
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                City city = new City();
+                city.setCountryCode(result.getString("CountryCode"));
+                city.setDistrict(result.getString("District"));
+                city.setID(result.getInt("ID"));
+                city.setName(result.getString("Name"));
+                city.setPopulation(result.getInt("Population"));
+                cities.add(city);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return cities;
+    }
+
+    public List<City> findCityByCountryCode(String countryCode) {
+        List<City> cities = new ArrayList<City>();
+        City city = new City();
+        // Query to find a city by its country code
+        String select = "SELECT * FROM city WHERE countryCode=?";
+        try (PreparedStatement ps = connection.prepareStatement(select);) {
+            ps.setString(1, countryCode);
+            // Execute the query
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                city.setCountryCode(result.getString("CountryCode"));
+                city.setDistrict(result.getString("District"));
+                city.setID(result.getInt("ID"));
+                city.setName(result.getString("Name"));
+                city.setPopulation(result.getInt("Population"));
+                cities.add(city);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return cities;
+    }
+
+    public List<City> findCityPopulationOver1Million() {
+        List<City> cities = new ArrayList<City>();
+        City city = new City();
+        // Query to find a city with population over 1 million
+        String select = "SELECT * FROM city WHERE population > 1000000";
+        try (PreparedStatement ps = connection.prepareStatement(select);) {
+            // Execute the query
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                city.setCountryCode(result.getString("CountryCode"));
+                city.setDistrict(result.getString("District"));
+                city.setID(result.getInt("ID"));
+                city.setName(result.getString("Name"));
+                city.setPopulation(result.getInt("Population"));
+                cities.add(city);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return cities;
+    }
 }

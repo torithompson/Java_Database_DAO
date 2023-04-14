@@ -158,4 +158,78 @@ public class CountryDao implements Dao<Country, String> {
         //Return the success of the delete
         return success;
     }
+
+    // Find country by name
+    public List<Country> findByName(String name) {
+        // Create a list of countries
+        List<Country> countries = new ArrayList<Country>();
+        // Create a select statement
+        String select = "SELECT * FROM country WHERE name=?";
+        try (PreparedStatement ps = connection.prepareStatement(select);) {
+            ps.setString(1, name);
+            ResultSet result = ps.executeQuery();
+            // Loop through the result set and add each country to the list
+            while (result.next()) {
+                Country country = new Country();
+                country.setCode(result.getString("Code"));
+                country.setName(result.getString("Name"));
+                country.setContinent(result.getString("Continent"));
+                country.setRegion(result.getString("Region"));
+                country.setSurfaceArea(result.getDouble("SurfaceArea"));
+                country.setIndepYear(result.getInt("IndepYear"));
+                country.setPopulation(result.getInt("Population"));
+                country.setLifeExpectancy(result.getDouble("LifeExpectancy"));
+                country.setGNP(result.getDouble("GNP"));
+                country.setGNPOld(result.getDouble("GNPOld"));
+                country.setLocalName(result.getString("LocalName"));
+                country.setGovernmentForm(result.getString("GovernmentForm"));
+                country.setHeadOfState(result.getString("HeadOfState"));
+                country.setCapital(result.getInt("Capital"));
+                country.setCode2(result.getString("Code2"));
+                // Add the country to the list
+                countries.add(country);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        // Return the list of countries
+        return countries;
+    }
+
+    // Find all countries in a given region
+    public List<Country> findByRegion(String region) {
+        // Create a list of countries
+        List<Country> countries = new ArrayList<Country>();
+        // Create a select statement
+        String select = "SELECT * FROM country WHERE region=?";
+        try (PreparedStatement ps = connection.prepareStatement(select);) {
+            ps.setString(1, region);
+            ResultSet result = ps.executeQuery();
+            // Loop through the result set and add each country to the list
+            while (result.next()) {
+                Country country = new Country();
+                country.setCode(result.getString("Code"));
+                country.setName(result.getString("Name"));
+                country.setContinent(result.getString("Continent"));
+                country.setRegion(result.getString("Region"));
+                country.setSurfaceArea(result.getDouble("SurfaceArea"));
+                country.setIndepYear(result.getInt("IndepYear"));
+                country.setPopulation(result.getInt("Population"));
+                country.setLifeExpectancy(result.getDouble("LifeExpectancy"));
+                country.setGNP(result.getDouble("GNP"));
+                country.setGNPOld(result.getDouble("GNPOld"));
+                country.setLocalName(result.getString("LocalName"));
+                country.setGovernmentForm(result.getString("GovernmentForm"));
+                country.setHeadOfState(result.getString("HeadOfState"));
+                country.setCapital(result.getInt("Capital"));
+                country.setCode2(result.getString("Code2"));
+                // Add the country to the list
+                countries.add(country);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        // Return the list of countries
+        return countries;
+    }
 }

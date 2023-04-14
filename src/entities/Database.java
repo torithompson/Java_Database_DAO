@@ -18,6 +18,6 @@ public class Database {
         //Format the connection string
         String dbUrl = String.format("%s:%s://%s:%s/%s", protocol, dbServer, host, port, dbName);
         //Return the connection
-        return DriverManager.getConnection(dbUrl, "", "");
+        return DriverManager.getConnection(dbUrl, "root", "Theboys2!");
     }
 }
